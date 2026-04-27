@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, MoreVertical, Plus, Edit2, Trash2 } from 'lucide-react';
 import Modal from '../bilesenler/Modal';
+import API_URL from '../api';
 
 const Calisanlar = () => {
   const [calisanlar, setCalisanlar] = useState([]);
@@ -11,16 +12,16 @@ const Calisanlar = () => {
   const token = localStorage.getItem('token');
 
   const getir = () => {
-    fetch('http://localhost:5000/api/calisanlar', { headers: { 'yetki-token': token } })
+    fetch(`${API_URL}/calisanlar`, { headers: { 'yetki-token': token } })
       .then(res => res.json()).then(setCalisanlar).catch(console.error);
-    fetch('http://localhost:5000/api/departmanlar', { headers: { 'yetki-token': token } })
+    fetch(`${API_URL}/departmanlar`, { headers: { 'yetki-token': token } })
       .then(res => res.json()).then(setDepartmanlar).catch(console.error);
   };
   useEffect(() => { getir(); }, [token]);
 
   const kaydet = async (e) => {
     e.preventDefault();
-    const url = form.id ? `http://localhost:5000/api/calisanlar/${form.id}` : 'http://localhost:5000/api/calisanlar';
+    const url = form.id ? `${API_URL}/calisanlar/${form.id}` : `${API_URL}/calisanlar`;
     const method = form.id ? 'PUT' : 'POST';
     await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'yetki-token': token }, body: JSON.stringify(form) });
     setModalAcik(false);
@@ -29,7 +30,7 @@ const Calisanlar = () => {
 
   const sil = async (id) => {
     if(!window.confirm('Emin misiniz? Dikkat: Çalışanın tüm performans, maaş ve izin verileri kalıcı silinir!')) return;
-    await fetch(`http://localhost:5000/api/calisanlar/${id}`, { method: 'DELETE', headers: { 'yetki-token': token } });
+    await fetch(`${API_URL}/calisanlar/${id}`, { method: 'DELETE', headers: { 'yetki-token': token } });
     getir();
   };
 

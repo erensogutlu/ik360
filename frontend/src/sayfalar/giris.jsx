@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../api';
 
 const Giris = () => {
   const [eposta, setEposta] = useState('');
@@ -12,7 +13,7 @@ const Giris = () => {
     setHata('');
 
     try {
-      const yanit = await fetch('http://localhost:5000/api/auth/giris', {
+      const yanit = await fetch(`${API_URL}/auth/giris`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eposta, sifre })

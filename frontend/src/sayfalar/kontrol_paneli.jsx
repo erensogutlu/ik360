@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Users, Building2, CalendarClock, Briefcase } from 'lucide-react';
+import API_URL from '../api';
 
 const KontrolPaneli = () => {
   const [istatistik, setIstatistik] = useState({ toplam_calisan: 0, toplam_departman: 0, bekleyen_izin: 0 });
@@ -8,7 +9,7 @@ const KontrolPaneli = () => {
 
   useEffect(() => {
     // İstatistik verilerini çek
-    fetch('http://localhost:5000/api/calisanlar/istatistik', {
+    fetch(`${API_URL}/calisanlar/istatistik`, {
       headers: { 'yetki-token': token }
     })
       .then(res => res.json())
@@ -16,7 +17,7 @@ const KontrolPaneli = () => {
       .catch(hata => console.error('veri çekilemedi', hata));
 
     // Son işe alınanları çek
-    fetch('http://localhost:5000/api/calisanlar', {
+    fetch(`${API_URL}/calisanlar`, {
       headers: { 'yetki-token': token }
     })
       .then(res => res.json())

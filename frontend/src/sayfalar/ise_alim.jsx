@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { UserPlus, Plus, Edit2, Trash2 } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, UserPlus, CheckCircle, XCircle, Clock } from 'lucide-react';
 import Modal from '../bilesenler/Modal';
+import API_URL from '../api';
 
 const IseAlim = () => {
   const [adaylar, setAdaylar] = useState([]);
@@ -9,14 +10,14 @@ const IseAlim = () => {
   const token = localStorage.getItem('token');
 
   const getir = () => {
-    fetch('http://localhost:5000/api/ise-alim', { headers: { 'yetki-token': token } })
+    fetch(`${API_URL}/ise-alim`, { headers: { 'yetki-token': token } })
       .then(res => res.json()).then(setAdaylar).catch(console.error);
   };
   useEffect(() => { getir(); }, [token]);
 
   const kaydet = async (e) => {
     e.preventDefault();
-    const url = form.id ? `http://localhost:5000/api/ise-alim/${form.id}` : 'http://localhost:5000/api/ise-alim';
+    const url = form.id ? `${API_URL}/ise-alim/${form.id}` : `${API_URL}/ise-alim`;
     const method = form.id ? 'PUT' : 'POST';
     await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'yetki-token': token }, body: JSON.stringify(form) });
     setModalAcik(false);
@@ -25,7 +26,7 @@ const IseAlim = () => {
 
   const sil = async (id) => {
     if(!window.confirm('Emin misiniz?')) return;
-    await fetch(`http://localhost:5000/api/ise-alim/${id}`, { method: 'DELETE', headers: { 'yetki-token': token } });
+    await fetch(`${API_URL}/ise-alim/${id}`, { method: 'DELETE', headers: { 'yetki-token': token } });
     getir();
   };
 

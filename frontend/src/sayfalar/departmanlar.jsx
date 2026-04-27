@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Building2, Plus, Edit2, Trash2 } from 'lucide-react';
 import Modal from '../bilesenler/Modal';
+import API_URL from '../api';
 
 const Departmanlar = () => {
   const [departmanlar, setDepartmanlar] = useState([]);
@@ -9,14 +10,14 @@ const Departmanlar = () => {
   const token = localStorage.getItem('token');
 
   const getir = () => {
-    fetch('http://localhost:5000/api/departmanlar', { headers: { 'yetki-token': token } })
+    fetch(`${API_URL}/departmanlar`, { headers: { 'yetki-token': token } })
       .then(res => res.json()).then(setDepartmanlar).catch(console.error);
   };
   useEffect(() => { getir(); }, [token]);
 
   const kaydet = async (e) => {
     e.preventDefault();
-    const url = form.id ? `http://localhost:5000/api/departmanlar/${form.id}` : 'http://localhost:5000/api/departmanlar';
+    const url = form.id ? `${API_URL}/departmanlar/${form.id}` : `${API_URL}/departmanlar`;
     const method = form.id ? 'PUT' : 'POST';
     await fetch(url, {
       method, headers: { 'Content-Type': 'application/json', 'yetki-token': token },
@@ -28,7 +29,7 @@ const Departmanlar = () => {
 
   const sil = async (id) => {
     if(!window.confirm('Emin misiniz? Dikkat: Bu departmana ait çalışan varsa silinemez!')) return;
-    await fetch(`http://localhost:5000/api/departmanlar/${id}`, { method: 'DELETE', headers: { 'yetki-token': token } });
+    await fetch(`${API_URL}/departmanlar/${id}`, { method: 'DELETE', headers: { 'yetki-token': token } });
     getir();
   };
 
